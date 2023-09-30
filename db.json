@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "user_name": "Fulano Teste",
+      "email": "fulano@teste.com",
+      "password": "senhateste123",
+      "confirm_password": "senhateste123",
+      "created_at": "2023-09-29T18:42:28.068Z"
+    }
+  ]
+}
