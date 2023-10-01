@@ -8,17 +8,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FcGoogle } from "react-icons/fc";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
-import { Header } from "@/components/Header";
 import { authLogin } from "@/services/api";
+import { User } from "@/@types/User";
+import { Header } from "@/components/Header";
 
 export default function Home() {
   const router = useRouter();
 
   const [showPasssword, setShowPassword] = useState(false);
-
-  function handlePasswordHidden() {
-    setShowPassword(!showPasssword);
-  }
 
   const loginValidationSchema = z.object({
     email: z
@@ -41,9 +38,9 @@ export default function Home() {
     resolver: zodResolver(loginValidationSchema),
   });
 
-  async function handleUserLogin(data: LoginValidationSchema) {
+  async function userLogin(data: LoginValidationSchema) {
     const fetchData = await authLogin();
-    const users = fetchData.filter((user: any) =>user.email === data.email && user.password === data.password);
+    const users = fetchData.filter((user: User) =>user.email === data.email && user.password === data.password);
 
     if (!users.length) {
       alert("E-mail ou senha incorretos.");
@@ -62,7 +59,7 @@ export default function Home() {
           </h2>
           <form
             className="mt-5 w-full flex flex-col gap-6"
-            onSubmit={handleSubmit(handleUserLogin)}
+            onSubmit={handleSubmit(userLogin)}
           >
             <div className="flex flex-col">
               <label className="font-semibold">Nome de usuário/E-mail:</label>
@@ -95,7 +92,7 @@ export default function Home() {
                   placeholder="Insira sua senha"
                   {...register("password")}
                 />
-                <button type="button" onClick={handlePasswordHidden}>
+                <button type="button" onClick={() => setShowPassword(!showPasssword)}>
                   {showPasssword ? <PiEyeLight /> : <PiEyeSlashLight />}
                 </button>
               </div>
@@ -113,8 +110,7 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className="rounded border border-zinc-500 text-black w-full p-2 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
-              disabled
+              className="rounded border border-zinc-500 text-black w-full p-2 flex items-center justify-center gap-2"
             >
               <FcGoogle size={20} />
               Entrar com o Google
