@@ -39,10 +39,10 @@ export default function Home() {
   });
 
   async function userLogin(data: LoginValidationSchema) {
-    const fetchData = await authLogin();
-    const users = fetchData.filter((user: User) =>user.email === data.email && user.password === data.password);
+    //const fetchData = await authLogin();
+    //const users = fetchData.filter((user: User) =>user.email === data.email && user.password === data.password);
 
-    if (!users.length) {
+    if (!data.email || !data.password) {
       alert("E-mail ou senha incorretos.");
       return;
     }
