@@ -95,7 +95,7 @@ export default function Home() {
                   placeholder="Insira sua senha"
                   {...register("password")}
                 />
-                <button type="button" onClick={() => setShowPassword(!showPasssword)}>
+                <button data-testid="toogleEye" type="button" onClick={() => setShowPassword(!showPasssword)}>
                   {showPasssword ? <PiEyeLight /> : <PiEyeSlashLight />}
                 </button>
               </div>

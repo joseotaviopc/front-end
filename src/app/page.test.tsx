@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "./page";
+import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 
 const mockPush = jest.fn();
@@ -47,5 +48,18 @@ describe("Home Component <Home />", () => {
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledWith("/feed");
     });
+  });
+
+  it('should toggles password visibility when button is clicked', () => {
+    const { asFragment } = render(<Home />);
+    const button = screen.getByTestId('toogleEye');
+  
+    expect(asFragment().querySelector('PiEyeSlashLight')).toBeDefined();
+  
+    fireEvent.click(button);
+    expect(asFragment().querySelector('PiEyeLight')).toBeDefined();
+  
+    fireEvent.click(button);
+    expect(asFragment().querySelector('PiEyeSlashLight')).toBeDefined();
   });
 });
