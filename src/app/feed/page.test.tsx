@@ -3,15 +3,17 @@ import "@testing-library/jest-dom"
 import Feed from "./page"
 
 describe("Home", () => {
-  it("renders a heading", () => {
+  it("should renders a userName and search input", () => {
     render(<Feed />)
 
     // Verificar um teste mais útil para essa pág
 
-    const heading = screen.getByRole("heading", {
-      name: "TechRoom BR",
-    })
+    const user = screen.getByText("Usuário", { selector: "span"})
+    const inputPlaceholder = screen.getByPlaceholderText("Pesquisar")
+    const input = screen.getByRole("textbox")
 
-    expect(heading).toBeInTheDocument()
+    expect(user).toBeInTheDocument()
+    expect(inputPlaceholder).toBeInTheDocument()
+    expect(input).toBeInTheDocument()
   })
 })
