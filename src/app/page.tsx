@@ -20,11 +20,11 @@ export default function Home() {
   const loginValidationSchema = z.object({
     email: z
       .string()
-      .nonempty("Campo obrigatório")
+      .min(1, "Campo obrigatório")
       .email("Formato e-mail inválido"),
     password: z
       .string()
-      .nonempty("Campo obrigatório")
+      .min(1, "Campo obrigatório")
       .min(6, "Mínimo 6 caracteres"),
   });
 
@@ -123,7 +123,7 @@ export default function Home() {
           <span className="mt-24">
             Ainda não tem uma conta?{" "}
             <Link
-              href="/"
+              href="/cadastro"
               className="text-green-color font-bold hover:underline"
             >
               Criar conta
