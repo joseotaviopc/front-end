@@ -27,7 +27,7 @@ describe("Component <Cadastro />", () => {
 
   });
 
-  it('should navigate to the "/feed" route when submitting correct credentials', async () => {
+  it('should navigate to the "/" route when submitting correct register', async () => {
     render(<Cadastro />);
 
     const nameInput = screen.getByPlaceholderText(
@@ -50,7 +50,7 @@ describe("Component <Cadastro />", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/feed");
+      expect(mockPush).toHaveBeenCalledWith("/");
     });
   });
 

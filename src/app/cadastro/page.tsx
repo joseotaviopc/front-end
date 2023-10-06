@@ -51,14 +51,7 @@ export default function Cadastro() {
   });
 
   async function userRegister(data: RegisterValidationSchema) {
-    const USER_EMAIL = "email@teste.com";
-    const USER_PASSWORD = "123456";
-
-    if (data.email !== USER_EMAIL || data.password !== USER_PASSWORD) {
-      console.log("E-mail ou senha incorretos.");
-      return;
-    }
-    router.push("/feed");
+    router.push("/");
   }
 
   return (
