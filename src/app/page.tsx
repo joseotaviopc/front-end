@@ -47,8 +47,10 @@ export default function Home() {
       return;
     }
 
-    toast.success(`Seja bem-vindo(a), ${fetchData.username}.`);
-    router.push("/feed");
+    toast.success(`Bem-vindo(a), ${fetchData.username}.`);
+    setTimeout(() => {
+      router.push("/feed");
+    }, 500);
   }
 
   return (
