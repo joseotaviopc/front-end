@@ -6,10 +6,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
-import { authLogin } from "@/services/api";
-import { User } from "@/@types/User";
+import { api } from "@/services/api";
 import { Header } from "@/components/Header";
 
 export default function Home() {
@@ -39,16 +39,15 @@ export default function Home() {
   });
 
   async function userLogin(data: LoginValidationSchema) {
-    // const fetchData = await authLogin();
-    // const users = fetchData.filter((user: User) =>user.email === data.email && user.password === data.password);
+    const fetchData = await api.authLogin(data);
+    console.log(fetchData);
 
-    const USER_EMAIL = "fulano@teste.com";
-    const USER_PASSWORD = "senhateste123";
-
-    if (data.email !== USER_EMAIL || data.password !== USER_PASSWORD) {
-      alert("E-mail ou senha incorretos.");
+    if (fetchData.error) {
+      toast.error(fetchData.message);
       return;
     }
+
+    toast.success(`Seja bem-vindo(a), ${fetchData.username}.`);
     router.push("/feed");
   }
 
@@ -95,7 +94,11 @@ export default function Home() {
                   placeholder="Insira sua senha"
                   {...register("password")}
                 />
-                <button data-testid="toogleEye" type="button" onClick={() => setShowPassword(!showPasssword)}>
+                <button
+                  data-testid="toogleEye"
+                  type="button"
+                  onClick={() => setShowPassword(!showPasssword)}
+                >
                   {showPasssword ? <PiEyeLight /> : <PiEyeSlashLight />}
                 </button>
               </div>

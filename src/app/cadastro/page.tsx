@@ -6,10 +6,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
-import { authLogin } from "@/services/api";
-import { User } from "@/@types/User";
+import { api } from "@/services/api";
 import { Header } from "@/components/Header";
 
 export default function Cadastro() {
@@ -17,28 +17,29 @@ export default function Cadastro() {
 
   const [showPasssword, setShowPassword] = useState({
     password: false,
-    consfirmPassword: false
+    consfirmPassword: false,
   });
 
-  const registerValidationSchema = z.object({
-    name: z.string().min(1, "Campo obrigatório"),
-    email: z
-      .string()
-      .min(1, "Campo obrigatório")
-      .email("Formato e-mail inválido"),
-    password: z
-      .string()
-      .min(1, "Campo obrigatório")
-      .min(6, "Mínimo 6 caracteres"),
-    confirmPassword: z
-      .string()
-      .min(1, "Campo obrigatório")
-      .min(6, "Mínimo 6 caracteres"),
-  })
+  const registerValidationSchema = z
+    .object({
+      name: z.string().min(1, "Campo obrigatório"),
+      email: z
+        .string()
+        .min(1, "Campo obrigatório")
+        .email("Formato e-mail inválido"),
+      password: z
+        .string()
+        .min(1, "Campo obrigatório")
+        .min(6, "Mínimo 6 caracteres"),
+      confirmPassword: z
+        .string()
+        .min(1, "Campo obrigatório")
+        .min(6, "Mínimo 6 caracteres"),
+    })
     .refine((data) => data.password === data.confirmPassword, {
-      message: "Senhas devem ser iguais",
+      message: "As senhas devem ser iguais",
       path: ["confirmPassword"],
-  });
+    });
 
   type RegisterValidationSchema = z.infer<typeof registerValidationSchema>;
 
@@ -51,7 +52,14 @@ export default function Cadastro() {
   });
 
   async function userRegister(data: RegisterValidationSchema) {
-    router.push("/");
+    const fetchData = await api.registerUser(data);
+    console.log(fetchData);
+
+    if (fetchData.status === "success") {
+      toast.success("Usuário cadastrado com sucesso.");
+      router.push("/");
+    }
+    toast.error(fetchData.message);
   }
 
   return (
@@ -113,8 +121,20 @@ export default function Cadastro() {
                   placeholder="Insira sua senha"
                   {...register("password")}
                 />
-                <button data-testid="toogleEye" type="button" onClick={() => setShowPassword(prev => {return { ...prev, password: !prev.password }})}>
-                  {showPasssword.password ? <PiEyeLight /> : <PiEyeSlashLight />}
+                <button
+                  data-testid="toogleEye"
+                  type="button"
+                  onClick={() =>
+                    setShowPassword((prev) => {
+                      return { ...prev, password: !prev.password };
+                    })
+                  }
+                >
+                  {showPasssword.password ? (
+                    <PiEyeLight />
+                  ) : (
+                    <PiEyeSlashLight />
+                  )}
                 </button>
               </div>
               {errors.password && (
@@ -138,8 +158,23 @@ export default function Cadastro() {
                   placeholder="Confirme sua senha"
                   {...register("confirmPassword")}
                 />
-                <button data-testid="toogleEye" type="button" onClick={() => setShowPassword(prev => {return { ...prev, consfirmPassword: !prev.consfirmPassword }})}>
-                  {showPasssword.consfirmPassword ? <PiEyeLight /> : <PiEyeSlashLight />}
+                <button
+                  data-testid="toogleEye"
+                  type="button"
+                  onClick={() =>
+                    setShowPassword((prev) => {
+                      return {
+                        ...prev,
+                        consfirmPassword: !prev.consfirmPassword,
+                      };
+                    })
+                  }
+                >
+                  {showPasssword.consfirmPassword ? (
+                    <PiEyeLight />
+                  ) : (
+                    <PiEyeSlashLight />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && (
