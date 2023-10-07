@@ -58,6 +58,7 @@ export default function Cadastro() {
     if (fetchData.status === "success") {
       toast.success("Usuário cadastrado com sucesso.");
       router.push("/");
+      return;
     }
     toast.error(fetchData.message);
   }
