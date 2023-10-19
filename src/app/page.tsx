@@ -40,7 +40,6 @@ export default function Home() {
 
   async function userLogin(data: LoginValidationSchema) {
     const fetchData = await api.authLogin(data);
-    console.log(fetchData);
 
     if (fetchData.error) {
       toast.error(fetchData.message);
@@ -48,6 +47,8 @@ export default function Home() {
     }
 
     toast.success(`Bem-vindo(a), ${fetchData.username}.`);
+    localStorage.setItem('token', fetchData.token);
+    localStorage.setItem('userName', fetchData.username);
     setTimeout(() => {
       router.push("/feed");
     }, 500);
