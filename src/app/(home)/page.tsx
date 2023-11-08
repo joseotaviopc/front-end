@@ -1,15 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
-import { api } from "@/services/api";
 import { Header } from "@/components/Header";
 
 export default function Home() {
@@ -38,20 +38,20 @@ export default function Home() {
     resolver: zodResolver(loginValidationSchema),
   });
 
-  async function userLogin(data: LoginValidationSchema) {
-    const fetchData = await api.authLogin(data);
+  async function handleUserSignin(data: LoginValidationSchema) {
+    const result = await signIn("credentials", {
+      userName: data.email,
+      password: data.password,
+      redirect: false,
+    });
 
-    if (fetchData.error) {
-      toast.error(fetchData.message);
+    if (!result?.ok) {
+      toast.error("Usuário ou senha inválidos.");
       return;
     }
 
-    toast.success(`Bem-vindo(a), ${fetchData.username}.`);
-    localStorage.setItem('token', fetchData.token);
-    localStorage.setItem('userName', fetchData.username);
-    setTimeout(() => {
-      router.push("/feed");
-    }, 500);
+    toast.success("Bem-vindo(a) ao TechRoom!");
+    router.replace("/feed");
   }
 
   return (
@@ -64,12 +64,13 @@ export default function Home() {
           </h2>
           <form
             className="mt-5 w-full flex flex-col gap-6"
-            onSubmit={handleSubmit(userLogin)}
+            onSubmit={handleSubmit(handleUserSignin)}
           >
             <div className="flex flex-col">
               <label className="font-semibold">Nome de usuário/E-mail:</label>
               <input
                 type="text"
+                id="email"
                 className={`font-regular border outline-none rounded border-zinc-500 py-2 px-3 ${
                   errors.email && "login-error"
                 }`}
@@ -91,6 +92,7 @@ export default function Home() {
               >
                 <input
                   type={showPasssword ? "text" : "password"}
+                  id="password"
                   className={`w-full font-regular outline-none py-2 bg-transparent ${
                     errors.password && "placeholder:text-red-500"
                   }`}

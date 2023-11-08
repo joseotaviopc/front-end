@@ -1,4 +1,4 @@
-import FeedHeader from "@/components/FeedHeader"
+import FeedHeader from "@/components/FeedHeader";
 
 export default function Feed() {
   return (
@@ -13,5 +13,5 @@ export default function Feed() {
         </div>
       </div>
     </main>
-  )
+  );
 }

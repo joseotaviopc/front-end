@@ -1,10 +1,17 @@
-import Image from "next/image"
-import logo from "@/assets/images/techroom-logo.png"
-import userSVG from "@/assets/svgs/user.svg"
-import searchSVG from "@/assets/svgs/search.svg"
-import FeedInput from "@/components/FeedInput"
+"use client";
+
+import Image from "next/image";
+import logo from "@/assets/images/techroom-logo.png";
+import userSVG from "@/assets/svgs/user.svg";
+import searchSVG from "@/assets/svgs/search.svg";
+import FeedInput from "@/components/FeedInput";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
+  async function handleUserSignout() {
+    await signOut();
+  }
+
   return (
     <header className="px-[48px] py-7 border-b-2 border-[#D9D9D9]">
       <div className="flex justify-between">
@@ -32,8 +39,14 @@ export default function Header() {
             className="max-w-[50px]"
           />
           <span className="text-black font-medium text-base">Usuário</span>
+          <button
+            className="rounded bg-red-500 text-white p-2 hover:bg-red-400"
+            onClick={handleUserSignout}
+          >
+            Sair
+          </button>
         </div>
       </div>
     </header>
-  )
+  );
 }
