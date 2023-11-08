@@ -26,7 +26,6 @@ describe("Home Component <Home />", () => {
     fireEvent.click(submitButtonElement);
 
     await screen.findAllByText("Campo obrigatório");
-
   });
 
   it('should navigate to the "/feed" route when submitting correct credentials', async () => {
@@ -50,16 +49,16 @@ describe("Home Component <Home />", () => {
     });
   });
 
-  it('should toggles password visibility when button is clicked', () => {
+  it("should toggles password visibility when button is clicked", () => {
     const { asFragment } = render(<Home />);
-    const button = screen.getByTestId('toogleEye');
-  
-    expect(asFragment().querySelector('PiEyeSlashLight')).toBeDefined();
-  
+    const button = screen.getByTestId("toogleEye");
+
+    expect(asFragment().querySelector("PiEyeSlashLight")).toBeDefined();
+
     fireEvent.click(button);
-    expect(asFragment().querySelector('PiEyeLight')).toBeDefined();
-  
+    expect(asFragment().querySelector("PiEyeLight")).toBeDefined();
+
     fireEvent.click(button);
-    expect(asFragment().querySelector('PiEyeSlashLight')).toBeDefined();
+    expect(asFragment().querySelector("PiEyeSlashLight")).toBeDefined();
   });
 });
